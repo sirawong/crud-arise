@@ -1,0 +1,51 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+coverage.out
+*.test
+
+# Build artifacts (keep main.go but ignore built binaries)
+main
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Environment files (except .env which we want to copy)
+.env.local
+.env.development
+.env.staging
+.env.production
+
+# Dependencies (will be downloaded during build)
+vendor/

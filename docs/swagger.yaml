@@ -1,0 +1,480 @@
+basePath: /api/v1
+definitions:
+  ProductCreateRequest:
+    properties:
+      categoryId:
+        type: string
+      description:
+        type: string
+      imageUrl:
+        type: string
+      name:
+        type: string
+      price:
+        minimum: 0
+        type: number
+      sku:
+        type: string
+      stock:
+        minimum: 0
+        type: integer
+    required:
+    - categoryId
+    - description
+    - name
+    - sku
+    type: object
+  github_com_sirawong_crud-arise_internal_handler_http_category_dto.Category:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_sirawong_crud-arise_internal_handler_http_category_dto.CategoryRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  github_com_sirawong_crud-arise_internal_handler_http_product_dto.Category:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_sirawong_crud-arise_internal_handler_http_product_dto.Product:
+    properties:
+      category:
+        $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_product_dto.Category'
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      imageUrl:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  github_com_sirawong_crud-arise_internal_handler_http_product_dto.ProductUpdateRequest:
+    properties:
+      categoryId:
+        type: string
+      description:
+        type: string
+      imageUrl:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a product management server with categories.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Product Management API
+  version: "1.0"
+paths:
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all categories
+      parameters:
+      - description: Search insensitive by category name
+        in: query
+        name: name
+        type: string
+      - description: 'Limit number of results (default: 10, limit: 100)'
+        in: query
+        name: limit
+        type: integer
+      - description: 'Offset for pagination (default: 0)'
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of categories
+          schema:
+            items:
+              $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_category_dto.Category'
+            type: array
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new category with the provided information
+      parameters:
+      - description: Category information
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_category_dto.CategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: '{"status": "category_id"}'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new category
+      tags:
+      - categories
+  /categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a category by ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status": "deleted"}'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: "{\"error_code\": \"NOT_FOUND\", \"message\": \"error\t\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a category
+      tags:
+      - categories
+    get:
+      consumes:
+      - application/json
+      description: Get a single category by its ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category information
+          schema:
+            $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_category_dto.Category'
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: "{\"error_code\": \"NOT_FOUND\", \"message\": \"error\t\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get a category by ID
+      tags:
+      - categories
+    put:
+      consumes:
+      - application/json
+      description: Update an existing category by ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Category information
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_category_dto.CategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status": "updated"}'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: "{\"error_code\": \"NOT_FOUND\", \"message\": \"error\t\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a category
+      tags:
+      - categories
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all products with optional filtering
+      parameters:
+      - description: Search insensitive by products name
+        in: query
+        name: name
+        type: string
+      - description: Filter by category ID
+        in: query
+        name: categoryId
+        type: string
+      - description: Minimum price filter
+        in: query
+        name: minPrice
+        type: number
+      - description: Maximum price filter
+        in: query
+        name: maxPrice
+        type: number
+      - description: 'Limit number of results (default: 10, limit: 100)'
+        in: query
+        name: limit
+        type: integer
+      - description: 'Offset for pagination (default: 0)'
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of products
+          schema:
+            items:
+              $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_product_dto.Product'
+            type: array
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all products
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with the provided information
+      parameters:
+      - description: Product creation information
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/ProductCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: '{"id": "product_id"}'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new product
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status": "deleted"}'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: "{\"error_code\": \"NOT_FOUND\", \"message\": \"error\t\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a product
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      description: Get a single product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product information
+          schema:
+            $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_product_dto.Product'
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: "{\"error_code\": \"NOT_FOUND\", \"message\": \"error\t\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get a product by ID
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      description: Update an existing product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Product update information
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_sirawong_crud-arise_internal_handler_http_product_dto.ProductUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status": "updated"}'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: "{\"error_code\": \"INVALID_ARGUMENT\", \"message\": \"error\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: "{\"error_code\": \"NOT_FOUND\", \"message\": \"error\t\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: "{\"error_code\": \"INTERNAL_ERROR\", \"message\": \"error\t\tdescription\"}"
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a product
+      tags:
+      - products
+swagger: "2.0"
