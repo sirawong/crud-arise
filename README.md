@@ -35,14 +35,59 @@ make up
 
 ## 🔧 Development
 
-```bash
-make help          # Show all commands
-make up            # Start all services + data
-make down          # Stop services
-make run           # Run API locally (needs PostgreSQL)
-make test          # Run tests
-make build         # Build and start
+### Architecture
+- **Clean Architecture**: Domain → Service → Handler layers
+- **Dependency Injection**: Clean separation of concerns
+- **Repository Pattern**: Abstract database operations
+- **Unit Testing**: Comprehensive test coverage with mocks
+
+### Project Structure
 ```
+├── cmd/api/           # Application entry point
+├── internal/
+│   ├── domain/        # Business entities & interfaces
+│   ├── services/      # Business logic
+│   ├── handler/       # HTTP controllers
+│   ├── repository/    # Database layer
+│   └── di/           # Dependency injection
+├── pkg/              # Shared utilities
+├── scripts/          # Database initialization
+└── docs/            # Swagger documentation
+```
+
+### Development Workflow
+```bash
+# 1. Start database + API + sample data
+make up
+
+# 2. For local development (API runs locally)
+make down              # Stop Docker API
+make postgres          # Start only PostgreSQL
+make run              # Run API locally
+
+# 3. Development commands
+make test             # Run unit tests
+make swagger          # Generate API docs
+make gen              # Generate mocks
+make lint             # Code linting
+```
+
+### Database
+- **Auto Migration**: GORM handles schema changes
+- **Sample Data**: Automatically loaded on first startup
+- **Clean Separation**: Repository pattern abstracts DB operations
+
+### Testing Strategy
+- **Service Layer**: Business logic with mocked repositories
+- **Handler Layer**: HTTP endpoints with mocked services
+- **Test Coverage**: Run `go test -cover ./...`
+
+### Adding New Features
+1. Define entity in `internal/domain/entity/`
+2. Create repository interface in `internal/domain/repository/`
+3. Implement business logic in `internal/services/`
+4. Add HTTP handlers in `internal/handler/http/`
+5. Wire dependencies in `internal/di/`
 
 ## ⚙️ Configuration
 
